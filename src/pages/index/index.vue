@@ -4,7 +4,7 @@
       <div class="main">
         <div class="userinfo" @click="bindViewTap">
           <div class="info">
-            <div class="avatar"><img :src="avatarUrl"></div>
+            <div class="avatar"><img src="../../../static/images/logo.png"></div>
             <div class="userinfo-nickname">{{userInfo.nickName}}</div>
           </div>
         </div>
@@ -19,10 +19,11 @@
       </div>
     </section>
     <footer class="footer">
+      <a href="/pages/logs/logs" class="home">去往首页</a>
       <div class="foo">
         <div class="foo-left">
           <div class="song-pic">
-            <img :src="song.img">
+            <img src="../../../static/images/avatar.jpg">
           </div>
           <div class="song-info">
             <p class="song-name">肆无忌惮</p>
@@ -59,15 +60,15 @@
   export default {
     data() {
       return {
-        logoUrl: '../../../static/images/logo.png',
-        avatarUrl: '../../../static/images/avatar.gif',
+        logoUrl: '',
+        avatarUrl: '',
         searchVal: "",
         motto: 'welcome',
         isActive: false,
         userInfo: {},
         loop:false,
         song:{
-          img:'../../../static/images/avatar.jpg',
+          img:'',
           src:"",
        },
         address: {}
@@ -109,14 +110,16 @@
         })
       },
       checkTeamUserInfo(){
-        var params ={
-            mobile:18121951865,
-            subject_id:41,
-            team:1
-          }
-          this.$http.checkTeamUserInfo(params).then(function (res) {
-            console.log(res)
+     
+          this.$http.get("/test",{xx:6}).then((d)=>{ //post方法将这里的get改修post即可
+            //输出请求数据
+            console.log(d.data)
+            //输出响应头
+            console.log(d.header)
+          }).catch(err=>{
+            console.log(err.status,err.message)
           })
+
       },
       getAddress() {
         wx.getLocation({
@@ -140,6 +143,8 @@
   
     },
     created() {
+      
+      const myaudio = wx.createInnerAudioContext();
       // 调用应用实例的方法获取全局数据
       this.getUserInfo()
       this.checkTeamUserInfo()
